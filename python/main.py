@@ -33,6 +33,15 @@ class HashTable:
             self._vector[index] = -1  # available
             self._quantity_of_inserted_items -= 1
 
+    def show(self):
+        for element in self._vector:
+            if element == -1:
+                print(element, end=" -> available\n")
+            elif element is None:
+                print(element, end=" -> empty\n")
+            else:
+                print(element, end=" -> occupied\n")
+
 
 if __name__ == "__main__":
     # hash table with a size of 7
@@ -68,3 +77,5 @@ if __name__ == "__main__":
 
     hash_table.remove(7)
     assert hash_table._vector[0] == 21
+
+    hash_table.show()
