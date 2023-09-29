@@ -1,14 +1,17 @@
 class HashTable:
     vector: list
-    size: int
+    vector_size: int
+    quantity_limit_of_items: int
+    quantity_of_inserted_items: int = 0
 
-    def __init__(self, size: int):
-        self.vector = [None for _ in range(size)]
-        self.size = size
+    def __init__(self, vector_size: int):
+        self.vector = [None for _ in range(vector_size)]
+        self.vector_size = vector_size
+        self.quantity_limit_of_items = vector_size // 1.3  # 70%
 
     def _hash(self, key: int):
-        # must always return an int between 0 and size -1
-        return key % self.size
+        # must always return an int between 0 and vector_size -1
+        return key % self.vector_size
 
     def push(self, key: int):
         index = self._hash(key)
