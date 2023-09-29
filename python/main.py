@@ -13,10 +13,14 @@ class HashTable:
         # must always return an int between 0 and vector_size -1
         return key % self.vector_size
 
+    def is_full(self):
+        return self.quantity_of_inserted_items == self.quantity_limit_of_items
+
     def push(self, key: int):
         index = self._hash(key)
         if self.vector[index] is None:
             self.vector[index] = key
+            self.quantity_of_inserted_items += 1
 
     def search(self, key: int):
         index = self._hash(key)
@@ -27,6 +31,7 @@ class HashTable:
         index = self._hash(key)
         if self.vector[index] == key:
             self.vector[index] = -1  # available
+            self.quantity_of_inserted_items -= 1
 
 
 if __name__ == "__main__":
@@ -44,6 +49,14 @@ if __name__ == "__main__":
 
     hash_table.push(7)  # 7 % 7 = 0
     assert hash_table.vector[0] == 21
+
+    assert hash_table.quantity_of_inserted_items == 3
+
+    assert not hash_table.is_full()
+
+    hash_table.push(2)
+    hash_table.push(4)
+    assert hash_table.is_full()
 
     assert hash_table.search(15) == 15
     assert hash_table.search(17) == 17
