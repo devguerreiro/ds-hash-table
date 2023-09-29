@@ -7,7 +7,7 @@ class HashTable:
     def __init__(self, vector_size: int):
         self._vector = [None for _ in range(vector_size)]
         self._vector_size = vector_size
-        self._quantity_limit_of_items = vector_size // 1.3  # 70%
+        self._quantity_limit_of_items = vector_size // 1.3  # 70% -> load factor
 
     def _hash(self, key: int):
         # must always return an int between 0 and vector size - 1
@@ -16,7 +16,7 @@ class HashTable:
     def is_full(self):
         return self._quantity_of_inserted_items == self._quantity_limit_of_items
 
-    def push(self, key: int):
+    def insert(self, key: int):
         index = self._hash(key)
         if self._vector[index] is None:
             self._vector[index] = key
@@ -34,37 +34,38 @@ class HashTable:
             self._quantity_of_inserted_items -= 1
 
     def show(self):
-        for element in self._vector:
+        for index, element in enumerate(self._vector):
+            print(index, end=": ")
             if element == -1:
-                print(element, end=" -> available\n")
+                print("-> available")
             elif element is None:
-                print(element, end=" -> empty\n")
+                print("-> empty")
             else:
-                print(element, end=" -> occupied\n")
+                print(element)
 
 
 if __name__ == "__main__":
     # hash table with a size of 7
     hash_table = HashTable(7)
 
-    hash_table.push(15)  # 15 % 7 = 1
+    hash_table.insert(15)  # 15 % 7 = 1
     assert hash_table._vector[1] == 15
 
-    hash_table.push(17)  # 17 % 17 = 3
+    hash_table.insert(17)  # 17 % 17 = 3
     assert hash_table._vector[3] == 17
 
-    hash_table.push(21)  # 21 % 7 = 0
+    hash_table.insert(21)  # 21 % 7 = 0
     assert hash_table._vector[0] == 21
 
-    hash_table.push(7)  # 7 % 7 = 0
+    hash_table.insert(7)  # 7 % 7 = 0
     assert hash_table._vector[0] == 21
 
     assert hash_table._quantity_of_inserted_items == 3
 
     assert not hash_table.is_full()
 
-    hash_table.push(2)
-    hash_table.push(4)
+    hash_table.insert(2)
+    hash_table.insert(4)
     assert hash_table.is_full()
 
     assert hash_table.search(15) == 15
