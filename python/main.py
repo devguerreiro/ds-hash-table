@@ -20,6 +20,11 @@ class HashTable:
         value = self.vector[index]
         return value if key == value else None
 
+    def remove(self, key: int):
+        index = self._hash(key)
+        if self.vector[index] == key:
+            self.vector[index] = -1  # available
+
 
 if __name__ == "__main__":
     # hash table with a size of 7
@@ -41,3 +46,9 @@ if __name__ == "__main__":
     assert hash_table.search(17) == 17
     assert hash_table.search(21) == 21
     assert hash_table.search(7) is None
+
+    hash_table.remove(15)
+    assert hash_table.vector[1] == -1
+
+    hash_table.remove(7)
+    assert hash_table.vector[0] == 21
