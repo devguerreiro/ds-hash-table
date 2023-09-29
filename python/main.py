@@ -16,22 +16,19 @@ class HashTable:
     def is_full(self):
         return self._quantity_of_inserted_items == self._quantity_limit_of_items
 
-    def insert(self, key: int):
+    def insert(self, key: int, value: str):
         index = self._hash(key)
-        if self._vector[index] is None:
-            self._vector[index] = key
-            self._quantity_of_inserted_items += 1
+        self._vector[index] = value
+        self._quantity_of_inserted_items += 1
 
     def search(self, key: int):
         index = self._hash(key)
-        value = self._vector[index]
-        return value if key == value else None
+        return self._vector[index]
 
     def remove(self, key: int):
         index = self._hash(key)
-        if self._vector[index] == key:
-            self._vector[index] = -1  # available
-            self._quantity_of_inserted_items -= 1
+        self._vector[index] = -1  # available
+        self._quantity_of_inserted_items -= 1
 
     def show(self):
         for index, element in enumerate(self._vector):
@@ -48,35 +45,31 @@ if __name__ == "__main__":
     # hash table with a size of 7
     hash_table = HashTable(7)
 
-    hash_table.insert(15)  # 15 % 7 = 1
-    assert hash_table._vector[1] == 15
+    hash_table.insert(15, "james")  # 15 % 7 = 1
+    assert hash_table._vector[1] == "james"
 
-    hash_table.insert(17)  # 17 % 17 = 3
-    assert hash_table._vector[3] == 17
+    hash_table.insert(17, "ellen")  # 17 % 17 = 3
+    assert hash_table._vector[3] == "ellen"
 
-    hash_table.insert(21)  # 21 % 7 = 0
-    assert hash_table._vector[0] == 21
-
-    hash_table.insert(7)  # 7 % 7 = 0
-    assert hash_table._vector[0] == 21
+    hash_table.insert(21, "bill")  # 21 % 7 = 0
+    assert hash_table._vector[0] == "bill"
 
     assert hash_table._quantity_of_inserted_items == 3
 
     assert not hash_table.is_full()
 
-    hash_table.insert(2)
-    hash_table.insert(4)
+    hash_table.insert(2, "susan")
+    hash_table.insert(4, "lucca")
     assert hash_table.is_full()
 
-    assert hash_table.search(15) == 15
-    assert hash_table.search(17) == 17
-    assert hash_table.search(21) == 21
-    assert hash_table.search(7) is None
+    assert hash_table.search(15) == "james"
+    assert hash_table.search(17) == "ellen"
+    assert hash_table.search(21) == "bill"
 
     hash_table.remove(15)
     assert hash_table._vector[1] == -1
 
     hash_table.remove(7)
-    assert hash_table._vector[0] == 21
+    assert hash_table._vector[0] == -1
 
     hash_table.show()
