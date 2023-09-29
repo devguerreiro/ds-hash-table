@@ -15,6 +15,11 @@ class HashTable:
         if self.vector[index] is None:
             self.vector[index] = key
 
+    def search(self, key: int):
+        index = self._hash(key)
+        value = self.vector[index]
+        return value if key == value else None
+
 
 if __name__ == "__main__":
     # hash table with a size of 7
@@ -31,3 +36,8 @@ if __name__ == "__main__":
 
     hash_table.push(7)  # 7 % 7 = 0
     assert hash_table.vector[0] == 21
+
+    assert hash_table.search(15) == 15
+    assert hash_table.search(17) == 17
+    assert hash_table.search(21) == 21
+    assert hash_table.search(7) is None
