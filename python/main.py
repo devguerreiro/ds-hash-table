@@ -17,6 +17,8 @@ class HashTable:
         return self._quantity_of_inserted_items == self._quantity_limit_of_items
 
     def insert(self, key: int, value: str):
+        if self.is_full():
+            raise IndexError("Hash table is full")
         index = self._hash(key)
         element = self._vector[index]
         while element is not None and element != -1:
@@ -90,5 +92,14 @@ if __name__ == "__main__":
 
     hash_table.remove(7, "peter")
     assert hash_table._vector[2] == -1
+
+    hash_table.insert(12, "john")
+    hash_table.insert(8, "poppy")
+
+    try:
+        hash_table.insert(8, "poppy")
+        raise AssertionError()
+    except Exception as e:
+        assert isinstance(e, IndexError)
 
     hash_table.show()
