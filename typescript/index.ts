@@ -46,6 +46,20 @@ class HashTable {
         }
     }
 
+    remove(key: number, value: string) {
+        let index = this.hash(key);
+        let element = this.vector[index];
+        while (element !== null) {
+            if (element === value) {
+                this.vector[index] = -1;
+                this.quantityOfInsertedItems--;
+                break;
+            }
+            index = (index + 1) % this.vectorSize;
+            element = this.vector[index];
+        }
+    }
+
     getVector() {
         return this.vector;
     }
@@ -81,3 +95,9 @@ assert.equal(hashTable.search(15, "james"), 1);
 assert.equal(hashTable.search(17, "ellen"), 3);
 assert.equal(hashTable.search(21, "bill"), 0);
 assert.equal(hashTable.search(7, "peter"), 2);
+
+hashTable.remove(15, "james");
+assert.equal(hashTable.getVector()[1], -1);
+
+hashTable.remove(7, "peter");
+assert.equal(hashTable.getVector()[2], -1);
