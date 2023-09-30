@@ -60,6 +60,19 @@ class HashTable {
         }
     }
 
+    show() {
+        this.vector.forEach((element, index) => {
+            process.stdout.write(index + ": ");
+            if (element === -1) {
+                console.log("-> available");
+            } else if (element === null) {
+                console.log("-> empty");
+            } else {
+                console.log(element);
+            }
+        });
+    }
+
     getVector() {
         return this.vector;
     }
@@ -101,3 +114,10 @@ assert.equal(hashTable.getVector()[1], -1);
 
 hashTable.remove(7, "peter");
 assert.equal(hashTable.getVector()[2], -1);
+
+hashTable.insert(12, "john");
+hashTable.insert(8, "poppy");
+
+assert.throws(() => hashTable.insert(8, "poppy"));
+
+hashTable.show();
