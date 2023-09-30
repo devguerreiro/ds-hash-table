@@ -18,6 +18,10 @@ class HashTable:
 
     def insert(self, key: int, value: str):
         index = self._hash(key)
+        element = self._vector[index]
+        while element is not None and element != -1:
+            index = (index + 1) % self._vector_size
+            element = self._vector[index]
         self._vector[index] = value
         self._quantity_of_inserted_items += 1
 
@@ -54,11 +58,14 @@ if __name__ == "__main__":
     hash_table.insert(21, "bill")  # 21 % 7 = 0
     assert hash_table._vector[0] == "bill"
 
-    assert hash_table._quantity_of_inserted_items == 3
+    # should collide with 21 and insert on the next position
+    hash_table.insert(7, "peter")  # 21 % 7 = 0
+    assert hash_table._vector[2] == "peter"
+
+    assert hash_table._quantity_of_inserted_items == 4
 
     assert not hash_table.is_full()
 
-    hash_table.insert(2, "susan")
     hash_table.insert(4, "lucca")
     assert hash_table.is_full()
 
