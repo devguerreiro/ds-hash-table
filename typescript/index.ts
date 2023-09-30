@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert, { fail } from "assert";
 
 class HashTable {
     private vector: (number | string | null)[];
@@ -34,8 +34,24 @@ class HashTable {
         this.quantityOfInsertedItems++;
     }
 
+    search(key: number, value: string) {
+        let index = this.hash(key);
+        let element = this.vector[index];
+        while (element !== null) {
+            if (element === value) {
+                return index;
+            }
+            index = (index + 1) % this.vectorSize;
+            element = this.vector[index];
+        }
+    }
+
     getVector() {
         return this.vector;
+    }
+
+    getQuantityOfInsertedItems() {
+        return this.quantityOfInsertedItems;
     }
 }
 
@@ -53,3 +69,15 @@ assert.equal(hashTable.getVector()[0], "bill");
 // should collide with 21 and insert on the next position
 hashTable.insert(7, "peter");
 assert.equal(hashTable.getVector()[2], "peter");
+
+assert.equal(hashTable.getQuantityOfInsertedItems(), 4);
+
+assert.equal(hashTable.isFull(), false);
+
+hashTable.insert(4, "lucca");
+assert.equal(hashTable.isFull(), true);
+
+assert.equal(hashTable.search(15, "james"), 1);
+assert.equal(hashTable.search(17, "ellen"), 3);
+assert.equal(hashTable.search(21, "bill"), 0);
+assert.equal(hashTable.search(7, "peter"), 2);

@@ -27,7 +27,7 @@ class HashTable:
         self._vector[index] = value
         self._quantity_of_inserted_items += 1
 
-    def search(self, key: int, value: int):
+    def search(self, key: int, value: str):
         index = self._hash(key)
         element = self._vector[index]
         while element is not None:
@@ -36,7 +36,7 @@ class HashTable:
             index = (index + 1) % self._vector_size
             element = self._vector[index]
 
-    def remove(self, key: int, value: int):
+    def remove(self, key: int, value: str):
         index = self._hash(key)
         element = self._vector[index]
         while element is not None:
