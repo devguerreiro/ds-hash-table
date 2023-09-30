@@ -29,10 +29,16 @@ class HashTable:
         index = self._hash(key)
         return self._vector[index]
 
-    def remove(self, key: int):
+    def remove(self, key: int, value: int):
         index = self._hash(key)
-        self._vector[index] = -1  # available
-        self._quantity_of_inserted_items -= 1
+        element = self._vector[index]
+        while element is not None:
+            if element == value:
+                self._vector[index] = -1
+                self._quantity_of_inserted_items -= 1
+                break
+            index = (index + 1) % self._vector_size
+            element = self._vector[index]
 
     def show(self):
         for index, element in enumerate(self._vector):
@@ -73,10 +79,10 @@ if __name__ == "__main__":
     assert hash_table.search(17) == "ellen"
     assert hash_table.search(21) == "bill"
 
-    hash_table.remove(15)
+    hash_table.remove(15, "james")
     assert hash_table._vector[1] == -1
 
-    hash_table.remove(7)
-    assert hash_table._vector[0] == -1
+    hash_table.remove(7, "peter")
+    assert hash_table._vector[2] == -1
 
     hash_table.show()
