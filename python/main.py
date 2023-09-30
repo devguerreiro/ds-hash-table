@@ -25,9 +25,14 @@ class HashTable:
         self._vector[index] = value
         self._quantity_of_inserted_items += 1
 
-    def search(self, key: int):
+    def search(self, key: int, value: int):
         index = self._hash(key)
-        return self._vector[index]
+        element = self._vector[index]
+        while element is not None:
+            if element == value:
+                return index
+            index = (index + 1) % self._vector_size
+            element = self._vector[index]
 
     def remove(self, key: int, value: int):
         index = self._hash(key)
@@ -75,9 +80,10 @@ if __name__ == "__main__":
     hash_table.insert(4, "lucca")
     assert hash_table.is_full()
 
-    assert hash_table.search(15) == "james"
-    assert hash_table.search(17) == "ellen"
-    assert hash_table.search(21) == "bill"
+    assert hash_table.search(15, "james") == 1
+    assert hash_table.search(17, "ellen") == 3
+    assert hash_table.search(21, "bill") == 0
+    assert hash_table.search(7, "peter") == 2
 
     hash_table.remove(15, "james")
     assert hash_table._vector[1] == -1
